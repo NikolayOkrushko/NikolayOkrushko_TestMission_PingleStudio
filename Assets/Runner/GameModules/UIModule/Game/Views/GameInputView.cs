@@ -1,4 +1,5 @@
-﻿using PingleStudio.Runner.GameModule.UIModule.Base;
+﻿using System;
+using PingleStudio.Runner.GameModule.UIModule.Base;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,22 +14,21 @@ namespace PingleStudio.Runner.GameModule.UIModule.Game
 
     public class GameInputView : BaseUiView
     {
+        public event Action<string> OnClickedMovementControl;
+
         [SerializeField] private Button _leftButtonControl;
         [SerializeField] private Button _centerButtonControl;
         [SerializeField] private Button _rightButtonControl;
-
-
-        public GameInputView()
-        {
-            // Нужно передать сюда внешний контроллер
-        }
-
 
         #region OverrideMethods
 
         public override void Init()
         {
             base.Init();
+
+            _leftButtonControl.onClick.AddListener(() => { UserClickedOnControlButton(GameInputNamed.LeftClicked); });
+            _centerButtonControl.onClick.AddListener(() => { UserClickedOnControlButton(GameInputNamed.CenterClicked); });
+            _rightButtonControl.onClick.AddListener(() => { UserClickedOnControlButton(GameInputNamed.RightClicked); });
         }
 
         public override void Show()
@@ -44,14 +44,7 @@ namespace PingleStudio.Runner.GameModule.UIModule.Game
         #endregion
 
 
-        #region Monobehabiour
-
-        private void Start()
-        {
-            _leftButtonControl.onClick.AddListener(() => { UserClickedOnControlButton(GameInputNamed.LeftClicked); });
-            _centerButtonControl.onClick.AddListener(() => { UserClickedOnControlButton(GameInputNamed.CenterClicked); });
-            _rightButtonControl.onClick.AddListener(() => { UserClickedOnControlButton(GameInputNamed.RightClicked); });
-        }
+        #region Monobehaviour
 
         private void OnDisable()
         {
@@ -69,15 +62,15 @@ namespace PingleStudio.Runner.GameModule.UIModule.Game
             {
                 case GameInputNamed.LeftClicked:
                     // Передать на внешний контроллер информацию об нажатии на левую кнопку передвижения
-                    Debug.LogError($"Нажата кнопка {GameInputNamed.LeftClicked}");
+                    OnClickedMovementControl?.Invoke(GameInputNamed.LeftClicked);
                     break;
                 case GameInputNamed.CenterClicked:
                     // Передать на внешний контроллер информацию об ноажатии на центральную кнопку движения
-                    Debug.LogError($"Нажата кнопка {GameInputNamed.CenterClicked}");
+                    OnClickedMovementControl?.Invoke(GameInputNamed.CenterClicked);
                     break;
                 case GameInputNamed.RightClicked:
                     // Передать на внешний контроллер информацию об нажатии на правую кнопку передвижения
-                    Debug.LogError($"Нажата кнопка {GameInputNamed.RightClicked}");
+                    OnClickedMovementControl?.Invoke(GameInputNamed.RightClicked);
                     break;
             }
         }

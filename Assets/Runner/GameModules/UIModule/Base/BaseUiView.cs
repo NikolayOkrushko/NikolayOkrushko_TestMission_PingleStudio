@@ -17,16 +17,21 @@ namespace PingleStudio.Runner.GameModule.UIModule.Base
             }
 
             _canvasGroup.alpha = HIDED_VIEW_VALUE;
+            _canvasGroup.interactable = false;
         }
 
         public virtual void Show()
         {
             _canvasGroup.alpha = SHOWED_VIEW_VALUE;
+            _canvasGroup.interactable = true;
+            _canvasGroup.blocksRaycasts = true;
         }
 
         public virtual void Hide()
         {
             _canvasGroup.alpha = HIDED_VIEW_VALUE;
+            _canvasGroup.interactable = false;
+            _canvasGroup.blocksRaycasts = false;
         }
     }
 }

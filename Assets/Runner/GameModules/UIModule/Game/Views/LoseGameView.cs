@@ -8,7 +8,9 @@ namespace PingleStudio.Runner.GameModule.UIModule.Game
     public class LoseGameView : BaseUiView
     {
         public event Action OnUserClickedBackToMain;
+        public event Action OnUserClickedRestartGame;
 
+        [SerializeField] private Button _restartGameButton;
         [SerializeField] private Button _backToMainButton;
 
         #region Monobehaviour
@@ -16,6 +18,7 @@ namespace PingleStudio.Runner.GameModule.UIModule.Game
         private void Start()
         {
             _backToMainButton.onClick.AddListener(NotifyAboutClickBackToMain);
+            _restartGameButton.onClick.AddListener(NotifyAboutClickRestartGame);
         }
 
         #endregion
@@ -45,9 +48,15 @@ namespace PingleStudio.Runner.GameModule.UIModule.Game
             OnUserClickedBackToMain?.Invoke();
         }
 
+        public void NotifyAboutClickRestartGame()
+        {
+            OnUserClickedRestartGame?.Invoke();
+        }
+
         private void OnDestroy()
         {
             _backToMainButton.onClick.RemoveAllListeners();
+            _restartGameButton.onClick.RemoveAllListeners();
         }
     }
 }
